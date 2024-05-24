@@ -1,0 +1,25 @@
+---
+const slug = Astro.params.slug;
+let options = {
+    method: 'GET',
+    headers: {
+        Accept: '*/*',
+        'User-Agent': 'Thunder Client (https://www.thunderclient.com)',
+    },
+};
+const url = `https://apis.roblox.com/universes/v1/places/${slug}/universe`;
+
+const fetching = '';
+
+fetch(url, options)
+    .then((res) => res.json())
+    .then((json) => console.log(json))
+    .then((json) => {
+        fetching;
+    })
+    .catch((err) => console.error('error:' + err));
+
+console.log(fetching);
+---
+
+<div>{fetching}</div>
