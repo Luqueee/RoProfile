@@ -1,0 +1,22 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+    .mask-gradient {
+        mask-image: radial-gradient(
+            circle,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 1) 40%,
+            rgba(0, 0, 0, 0.5) 60%,
+            rgba(0, 0, 0, 0) 75%
+        );
+        -webkit-mask-image: radial-gradient(
+            circle,
+            rgba(0, 0, 0, 1) 0%,
+            rgba(0, 0, 0, 1) 40%,
+            rgba(0, 0, 0, 0.5) 60%,
+            rgba(0, 0, 0, 0) 75%
+        );
+    }
+}

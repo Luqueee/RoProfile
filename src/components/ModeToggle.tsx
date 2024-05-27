@@ -28,7 +28,7 @@ export function ModeToggle() {
     }, [theme]);
 
     return (
-        <div className="absolute top-0 right-0 m-2">
+        <div className="absolute top-2 right-2 z-50">
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Button variant="outline" size="icon">

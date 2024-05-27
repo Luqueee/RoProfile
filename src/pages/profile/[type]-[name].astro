@@ -1,0 +1,148 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Card from '../../components/Card.astro';
+import '../../styles/globals.css';
+const nombre = Astro.params.name;
+const typesearch = Astro.params.type;
+const origin = Astro.url.origin;
+
+//console.log(nombre);
+//console.log(origin);
+//console.log(typesearch);
+
+if (Astro.request.method === 'POST') {
+    try {
+        const data = await Astro.request.formData();
+        const name = data.get('profilename');
+        const type = data.get('profileOption');
+        console.log(name);
+        return Astro.redirect(`/profile/${type}-${name}`);
+        // Do something with the data
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error(error.message);
+        }
+    }
+}
+
+const result =
+    typesearch == 'name'
+        ? await fetch(`${origin}/api/getplayersid/${nombre}`)
+        : await fetch(`${origin}/api/getplayername/${nombre}`);
+
+let data = await result.json();
+
+try {
+    data = await data.data[0];
+} catch {
+    data = data;
+}
+
+if (typesearch == 'id') {
+    const namevalue = await fetch(`${origin}/api/getplayersid/${data.name}`);
+    let dataname = await namevalue.json();
+    console.log(dataname);
+    data = await dataname.data[0];
+}
+
+console.log(data);
+//console.log(data);
+
+const datauserresult = await fetch(`${origin}/api/getplayer/${data.id}`);
+const datauser = await datauserresult.json();
+console.log(datauser);
+
+const profileavatarreq = await fetch(`${origin}/api/getimageplayer/${data.id}`);
+const profileavatar = await profileavatarreq.json();
+
+const profileimage = profileavatar.data[0].imageUrl;
+//console.log(profileavatar, profileimage);
+
+const assets = datauser.assets;
+
+const Assetsimages = await Promise.all(
+    assets.map(async (value: any) => {
+        const response = await fetch(`${origin}/api/getimage/${value.id}`);
+        const result = await response.json();
+        //console.log(result.data);
+        return result;
+    })
+);
+
+function getImageAsset(id: any) {
+    for (let i = 0; i < Assetsimages.length; i++) {
+        if (Assetsimages[i].data[0].targetId === id.id) {
+            return Assetsimages[i].data[0].imageUrl;
+        }
+    }
+    return null;
+}
+---
+
+<Layout title="Welcome to Astro.">
+    <div class="min-w-full p-4 rounded-md flex justify-center">
+        <form id="searchplayer" method="POST" class="w-[100%] flex h-8 gap-6">
+            <select
+                id="profileOption"
+                name="profileOption"
+                class="w-[8%] px-4 py-2 border rounded-lg h-10 bg-slate-800 transition-all duration-500 text-white"
+                required>
+                <option value="name">Por nombre</option>
+                <option value="id">Por id</option>
+
+                <!-- Add more options as needed -->
+            </select>
+
+            <input
+                type="text"
+                id="profilename"
+                name="profilename"
+                class="w-[50%] focus:w-[80%] px-4 py-2 border rounded-lg h-10 bg-slate-800 focus:bg-white transition-all duration-500 text-white focus:text-black"
+                placeholder="Perfil"
+                required
+            />
+
+            <button
+                type="submit"
+                class="flex-grow transition-all duration-500 bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 h-10"
+                >Buscar</button
+            >
+        </form>
+    </div>
+    <div class="min-w-[90%] flex gap-4 flex-wrap p-4 rounded-md justify-center">
+        <div
+            class="dark:bg-white bg-[#020817] p-8 rounded-lg shadow-lg text-black flex relative lg:basis-1/4 md:basis-1/2 flex-grow">
+            <section class="w-[60%]">
+                <h3
+                    class="text-2xl font-bold mb-6 dark:text-gray-800 text-white">
+                    Nombre a buscar:
+                </h3>
+                <p class="text-lg text-gray-700 leading-relaxed mt-4 mb-6">
+                    {data.name}
+                </p>
+            </section>
+            <section class="w-[40%]">
+                <img src={profileimage} class="rounded-md" />
+            </section>
+        </div>
+        {
+            assets.map((value: any) => (
+                <div class="dark:bg-white bg-[#020817] p-8 rounded-lg shadow-lg dark:text-gray-800 text-white flex justify-evenly lg:basis-1/4 md:basis-1/2 flex-grow">
+                    <section class=" w-[60%]">
+                        <h3 class="text-2xl font-bold mb-6 dark:text-gray-800 text-white">
+                            {value.assetType.name}
+                        </h3>
+                        <p class="text-lg dark:text-gray-800 text-white leading-relaxed mt-4 mb-6">
+                            {value.name}
+                        </p>
+                    </section>
+                    <section class="w-[40%] float-end">
+                        <img src={getImageAsset(value)} class=" rounded-md" />
+                    </section>
+                </div>
+            ))
+        }
+    </div>
+</Layout>
+
+<style></style>

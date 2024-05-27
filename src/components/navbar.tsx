@@ -8,9 +8,7 @@ export default function Navbar() {
             </div>
 
             <nav className="flex gap-8 items-center justify-center flex-grow">
-                <NavLink href="#">About</NavLink>
-                <NavLink href="#">Services</NavLink>
-                <NavLink href="#">Contact</NavLink>
+                <NavLink href="/">Inicio</NavLink>
             </nav>
         </div>
     );
@@ -20,7 +18,7 @@ function MountainIcon(props: any) {
     return (
         <Link
             className="font-bold text-lg text-white transition-colors hover:text-gray-300 py-4"
-            href="#">
+            href="/">
             roblox
         </Link>
     );
