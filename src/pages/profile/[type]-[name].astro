@@ -96,11 +96,14 @@ function getImageAsset(id: any) {
 
 <Layout title="Welcome to Astro.">
     <div class="min-w-full p-4 rounded-md flex justify-center">
-        <form id="searchplayer" method="POST" class="w-[100%] flex h-8 gap-6">
+        <form
+            id="searchplayer"
+            method="POST"
+            class="w-full md:w-[100%] flex-wrap flex gap-6">
             <select
                 id="profileOption"
                 name="profileOption"
-                class="w-[8%] px-4 py-2 border rounded-lg h-10 bg-slate-800 transition-all duration-500 text-white"
+                class="w-full md:lg:w-[8%] px-4 py-2 border rounded-lg h-10 bg-slate-800 transition-all duration-500 text-white"
                 required>
                 <option value="name">Por nombre</option>
                 <option value="id">Por id</option>
@@ -112,21 +115,21 @@ function getImageAsset(id: any) {
                 type="text"
                 id="profilename"
                 name="profilename"
-                class="w-[50%] focus:w-[80%] px-4 py-2 border rounded-lg h-10 bg-slate-800 focus:bg-white transition-all duration-500 text-white focus:text-black"
+                class="w-full md:w-[50%] md:focus:w-[80%] px-4 py-2 border rounded-lg h-10 bg-slate-800 focus:bg-white transition-all duration-500 text-white focus:text-black"
                 placeholder="Perfil"
                 required
             />
 
             <button
                 type="submit"
-                class="flex-grow transition-all duration-500 bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 h-10"
+                class="lg:w-[10%] flex-grow transition-all duration-500 bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 h-10"
                 >Buscar</button
             >
         </form>
     </div>
     <div class="min-w-[90%] flex gap-4 flex-wrap p-4 rounded-md">
         <div
-            class="dark:bg-white bg-[#020817] rounded-lg shadow-lg text-black flex relative basis-full">
+            class="bg-white dark:bg-[#020817] rounded-lg shadow-lg text-black flex relative basis-full">
             <section
                 class="min-w-[50%] px-4 py-8 rounded-tl-lg rounded-bl-lg"
                 style='background: rgb(210,213,217); background: -moz-linear-gradient(90deg, rgba(210,213,217,1) 60%, rgba(255,255,255,1) 84%); background: -webkit-linear-gradient(90deg, rgba(210,213,217,1) 40%, rgba(255,255,255,1) 84%); background: linear-gradient(90deg, rgba(210,213,217,1) 40%, rgba(255,255,255,1) 84%); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d2d5d9",endColorstr="#ffffff",GradientType=1);'>
@@ -139,13 +142,13 @@ function getImageAsset(id: any) {
             <section class="min-w-[20%] flex-grow">
                 <img
                     src={imageavatar[0]}
-                    class="w-[50%] rounded-md flex justify-end ml-auto"
+                    class="w-full sm:w-[50%] md:w-[50%] rounded-md flex justify-end ml-auto"
                 />
             </section>
         </div>
         {
             assets.map((value: any) => (
-                <div class="dark:bg-[rgb(210,213,217)] px-4 py-4 rounded-lg dark:text-gray-800 text-white flex flex-col align-middle justify-center basis-1/8 ">
+                <div class="dark:bg-[rgb(210,213,217)] bg-white px-4 py-4 rounded-lg shadow-md dark:text-gray-800 text-white flex flex-col align-middle justify-center basis-1/8 ">
                     <img
                         src={getImageAsset(value)}
                         class=" rounded-md h-[80%]"
@@ -153,7 +156,7 @@ function getImageAsset(id: any) {
                     <a
                         href={`https://www.roblox.com/catalog/${value.id}`}
                         target="_blank"
-                        class="text-2xl dark:text-gray-800 text-white leading-relaxed my-6 text-center font-semibold no-underline hover:font-bold dark:hover:text-gray-800 transition-all duration-500">
+                        class="text-2xl text-gray-800 leading-relaxed my-6 text-center font-semibold no-underline hover:font-bold hover:text-gray-800 transition-all duration-500">
                         {value.name}
                     </a>
                 </div>
