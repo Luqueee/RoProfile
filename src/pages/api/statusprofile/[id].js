@@ -8,6 +8,7 @@ export async function GET({ params }) {
             throw new Error('Failed to fetch data');
         }
         const data = await response.json();
+        console.log(data);
         return new Response(JSON.stringify(data), {
             headers: {
                 'Content-Type': 'application/json',

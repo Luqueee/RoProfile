@@ -2,6 +2,9 @@
 import Layout from '../../layouts/Layout.astro';
 import Card from '../../components/Card.astro';
 import '../../styles/globals.css';
+
+import GetRobuxProfile from '../../components/statusprofile/getrobuxprofile.jsx';
+
 const nombre = Astro.params.name;
 const typesearch = Astro.params.type;
 const origin = Astro.url.origin;
@@ -48,8 +51,8 @@ if (typesearch == 'id') {
 //console.log(data);
 //console.log(data);
 
-const assetsinforeq = await fetch(`${origin}/api/getassetsinfo/${data.id}`);
-const assetsinfo = await assetsinforeq.json();
+//const assetsinforeq = await fetch(`${origin}/api/getassetsinfo/${data.id}`);
+//const assetsinfo = await assetsinforeq.json();
 
 const datauserresult = await fetch(`${origin}/api/getplayer/${data.id}`);
 const datauser = await datauserresult.json();
@@ -59,23 +62,24 @@ const profileavatar = await profileavatarreq.json();
 
 const statusprofilereq = await fetch(`${origin}/api/statusprofile/${data.id}`);
 const statusprofile = await statusprofilereq.json();
+//console.log(statusprofile);
 
 let imageavatar: any = [];
 for (let key of Object.keys(profileavatar.thumbnails)) {
     let value = imageavatar[key];
-    console.log(`Key: ${key}, Value: ${value}`);
+    //console.log(`Key: ${key}, Value: ${value}`);
     imageavatar.push(profileavatar.thumbnails[key].url);
 }
 
 const assets = datauser.assets;
-
+console.log(assets);
 //const images = assetsinfo['collectibles'];
 
 const Assetsimages = await Promise.all(
     assets.map(async (value: any) => {
         const response = await fetch(`${origin}/api/getimage/${value.id}`);
         const result = await response.json();
-        console.log(result.data);
+        //console.log(result.data);
         return result;
     })
 );
@@ -130,14 +134,7 @@ function getImageAsset(id: any) {
                     class="lg:text-6xl font-semibold text-gray-700 leading-relaxed mt-4 mb-6">
                     {data.name}
                 </h3>
-                <p class="lg:text-4xl text-gray-700 leading-relaxed mt-4 mb-6">
-                    {assetsinfo['total_robux']}
-                    <span class="text-[#ac965c] font-bold">Robux</span>
-                </p>
-                <p class="lg:text-4xl text-gray-700 leading-relaxed mt-4 mb-6">
-                    {assetsinfo['in_euro']}
-                    <span class="text-[#95b46e] font-bold">€</span>
-                </p>
+                <GetRobuxProfile client:load origin={origin} id={data.id} />
             </section>
             <section class="min-w-[20%] flex-grow">
                 <img
@@ -148,11 +145,17 @@ function getImageAsset(id: any) {
         </div>
         {
             assets.map((value: any) => (
-                <div class="dark:bg-white bg-[#020817] px-4 py-4 rounded-lg shadow-lg dark:text-gray-800 text-white flex flex-col align-middle justify-center basis-1/8 ">
-                    <img src={getImageAsset(value)} class=" rounded-md" />
-                    <p class="text-2xl dark:text-gray-800 text-white leading-relaxed my-6 text-center font-semibold">
+                <div class="dark:bg-[rgb(210,213,217)] px-4 py-4 rounded-lg dark:text-gray-800 text-white flex flex-col align-middle justify-center basis-1/8 ">
+                    <img
+                        src={getImageAsset(value)}
+                        class=" rounded-md h-[80%]"
+                    />
+                    <a
+                        href={`https://www.roblox.com/catalog/${value.id}`}
+                        target="_blank"
+                        class="text-2xl dark:text-gray-800 text-white leading-relaxed my-6 text-center font-semibold no-underline hover:font-bold dark:hover:text-gray-800 transition-all duration-500">
                         {value.name}
-                    </p>
+                    </a>
                 </div>
             ))
         }
