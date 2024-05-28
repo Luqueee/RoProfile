@@ -2,7 +2,7 @@ export async function GET({ params }) {
     const id = params.id;
     try {
         const response = await fetch(
-            `https://thumbnails.roblox.com/v1/users/avatar-headshot?userIds=${id}&size=420x420&format=Png&isCircular=false`
+            `https://thumbnails.rolimons.com/avatar?userIds=${id}&size=420x420`
         );
         if (!response.ok) {
             throw new Error('Failed to fetch data');

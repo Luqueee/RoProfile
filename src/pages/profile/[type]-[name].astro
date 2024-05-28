@@ -15,7 +15,7 @@ if (Astro.request.method === 'POST') {
         const data = await Astro.request.formData();
         const name = data.get('profilename');
         const type = data.get('profileOption');
-        console.log(name);
+        //console.log(name);
         return Astro.redirect(`/profile/${type}-${name}`);
         // Do something with the data
     } catch (error) {
@@ -41,22 +41,29 @@ try {
 if (typesearch == 'id') {
     const namevalue = await fetch(`${origin}/api/getplayersid/${data.name}`);
     let dataname = await namevalue.json();
-    console.log(dataname);
+    //console.log(dataname);
     data = await dataname.data[0];
 }
 
-console.log(data);
+//console.log(data);
 //console.log(data);
 
 const datauserresult = await fetch(`${origin}/api/getplayer/${data.id}`);
 const datauser = await datauserresult.json();
-console.log(datauser);
+//console.log(datauser);
 
 const profileavatarreq = await fetch(`${origin}/api/getimageplayer/${data.id}`);
 const profileavatar = await profileavatarreq.json();
+//console.log(profileavatar);
 
-const profileimage = profileavatar.data[0].imageUrl;
-//console.log(profileavatar, profileimage);
+let imageavatar: any = [];
+
+for (let key of Object.keys(profileavatar.thumbnails)) {
+    let value = imageavatar[key];
+    console.log(`Key: ${key}, Value: ${value}`);
+    imageavatar.push(profileavatar.thumbnails[key].url);
+}
+//console.log(imageavatar);
 
 const assets = datauser.assets;
 
@@ -64,7 +71,7 @@ const Assetsimages = await Promise.all(
     assets.map(async (value: any) => {
         const response = await fetch(`${origin}/api/getimage/${value.id}`);
         const result = await response.json();
-        //console.log(result.data);
+        console.log(result.data);
         return result;
     })
 );
@@ -111,8 +118,8 @@ function getImageAsset(id: any) {
     </div>
     <div class="min-w-[90%] flex gap-4 flex-wrap p-4 rounded-md justify-center">
         <div
-            class="dark:bg-white bg-[#020817] p-8 rounded-lg shadow-lg text-black flex relative lg:basis-1/4 md:basis-1/2 flex-grow">
-            <section class="w-[60%]">
+            class="dark:bg-white bg-[#020817] p-8 rounded-lg shadow-lg text-black flex relative lg:basis-1/4 md:basis-1/2 flex-grow min-w-full">
+            <section class="min-w-[50%]">
                 <h3
                     class="text-2xl font-bold mb-6 dark:text-gray-800 text-white">
                     Nombre a buscar:
@@ -121,8 +128,11 @@ function getImageAsset(id: any) {
                     {data.name}
                 </p>
             </section>
-            <section class="w-[40%]">
-                <img src={profileimage} class="rounded-md" />
+            <section class="min-w-[20%] flex-grow">
+                <img
+                    src={imageavatar[0]}
+                    class="w-[50%] rounded-md flex justify-end ml-auto"
+                />
             </section>
         </div>
         {
