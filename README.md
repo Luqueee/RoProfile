@@ -1,4 +1,6 @@
-# Astro Starter Kit: Basics
+# Apiroblox
+
+## *Currently in development*
 
 ```sh
 npm create astro@latest -- --template basics
