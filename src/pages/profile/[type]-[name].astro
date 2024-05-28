@@ -12,9 +12,9 @@ const origin = Astro.url.origin;
 
 if (Astro.request.method === 'POST') {
     try {
-        const data = await Astro.request.formData();
-        const name = data.get('profilename');
-        const type = data.get('profileOption');
+        const datapost = await Astro.request.formData();
+        const name = datapost.get('profilename');
+        const type = datapost.get('profileOption');
         //console.log(name);
         return Astro.redirect(`/profile/${type}-${name}`);
         // Do something with the data
@@ -48,24 +48,28 @@ if (typesearch == 'id') {
 //console.log(data);
 //console.log(data);
 
+const assetsinforeq = await fetch(`${origin}/api/getassetsinfo/${data.id}`);
+const assetsinfo = await assetsinforeq.json();
+
 const datauserresult = await fetch(`${origin}/api/getplayer/${data.id}`);
 const datauser = await datauserresult.json();
-//console.log(datauser);
 
 const profileavatarreq = await fetch(`${origin}/api/getimageplayer/${data.id}`);
 const profileavatar = await profileavatarreq.json();
-//console.log(profileavatar);
+
+const statusprofilereq = await fetch(`${origin}/api/statusprofile/${data.id}`);
+const statusprofile = await statusprofilereq.json();
 
 let imageavatar: any = [];
-
 for (let key of Object.keys(profileavatar.thumbnails)) {
     let value = imageavatar[key];
     console.log(`Key: ${key}, Value: ${value}`);
     imageavatar.push(profileavatar.thumbnails[key].url);
 }
-//console.log(imageavatar);
 
 const assets = datauser.assets;
+
+//const images = assetsinfo['collectibles'];
 
 const Assetsimages = await Promise.all(
     assets.map(async (value: any) => {
@@ -116,16 +120,23 @@ function getImageAsset(id: any) {
             >
         </form>
     </div>
-    <div class="min-w-[90%] flex gap-4 flex-wrap p-4 rounded-md justify-center">
+    <div class="min-w-[90%] flex gap-4 flex-wrap p-4 rounded-md">
         <div
-            class="dark:bg-white bg-[#020817] p-8 rounded-lg shadow-lg text-black flex relative lg:basis-1/4 md:basis-1/2 flex-grow min-w-full">
-            <section class="min-w-[50%]">
+            class="dark:bg-white bg-[#020817] rounded-lg shadow-lg text-black flex relative basis-full">
+            <section
+                class="min-w-[50%] px-4 py-8 rounded-tl-lg rounded-bl-lg"
+                style='background: rgb(210,213,217); background: -moz-linear-gradient(90deg, rgba(210,213,217,1) 60%, rgba(255,255,255,1) 84%); background: -webkit-linear-gradient(90deg, rgba(210,213,217,1) 40%, rgba(255,255,255,1) 84%); background: linear-gradient(90deg, rgba(210,213,217,1) 40%, rgba(255,255,255,1) 84%); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d2d5d9",endColorstr="#ffffff",GradientType=1);'>
                 <h3
-                    class="text-2xl font-bold mb-6 dark:text-gray-800 text-white">
-                    Nombre a buscar:
-                </h3>
-                <p class="text-lg text-gray-700 leading-relaxed mt-4 mb-6">
+                    class="lg:text-6xl font-semibold text-gray-700 leading-relaxed mt-4 mb-6">
                     {data.name}
+                </h3>
+                <p class="lg:text-4xl text-gray-700 leading-relaxed mt-4 mb-6">
+                    {assetsinfo['total_robux']}
+                    <span class="text-[#ac965c] font-bold">Robux</span>
+                </p>
+                <p class="lg:text-4xl text-gray-700 leading-relaxed mt-4 mb-6">
+                    {assetsinfo['in_euro']}
+                    <span class="text-[#95b46e] font-bold">€</span>
                 </p>
             </section>
             <section class="min-w-[20%] flex-grow">
@@ -137,18 +148,11 @@ function getImageAsset(id: any) {
         </div>
         {
             assets.map((value: any) => (
-                <div class="dark:bg-white bg-[#020817] p-8 rounded-lg shadow-lg dark:text-gray-800 text-white flex justify-evenly lg:basis-1/4 md:basis-1/2 flex-grow">
-                    <section class=" w-[60%]">
-                        <h3 class="text-2xl font-bold mb-6 dark:text-gray-800 text-white">
-                            {value.assetType.name}
-                        </h3>
-                        <p class="text-lg dark:text-gray-800 text-white leading-relaxed mt-4 mb-6">
-                            {value.name}
-                        </p>
-                    </section>
-                    <section class="w-[40%] float-end">
-                        <img src={getImageAsset(value)} class=" rounded-md" />
-                    </section>
+                <div class="dark:bg-white bg-[#020817] px-4 py-4 rounded-lg shadow-lg dark:text-gray-800 text-white flex flex-col align-middle justify-center basis-1/8 ">
+                    <img src={getImageAsset(value)} class=" rounded-md" />
+                    <p class="text-2xl dark:text-gray-800 text-white leading-relaxed my-6 text-center font-semibold">
+                        {value.name}
+                    </p>
                 </div>
             ))
         }
