@@ -1,8 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import Card from '../components/Card.astro';
+import SearchUser from '@/components/forms/SearchUser.astro';
 import '../styles/globals.css';
-import { Button } from '@/components/ui/button';
 
 if (Astro.request.method === 'POST') {
     try {
@@ -24,33 +23,7 @@ if (Astro.request.method === 'POST') {
     <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w">
         <h2 class="text-2xl font-bold mb-6 text-gray-800">Ver perfil</h2>
 
-        <form id="searchplayer" method="POST" class="w-[100%] flex h-8 gap-6">
-            <select
-                id="profileOption"
-                name="profileOption"
-                class="w-[8%] px-4 py-2 border rounded-lg h-10 bg-slate-800 transition-all duration-500 text-white"
-                required>
-                <option value="name">Por nombre</option>
-                <option value="id">Por id</option>
-
-                <!-- Add more options as needed -->
-            </select>
-
-            <input
-                type="text"
-                id="profilename"
-                name="profilename"
-                class="w-[50%] focus:w-[80%] px-4 py-2 border rounded-lg h-10 bg-slate-800 focus:bg-white transition-all duration-500 text-white focus:text-black"
-                placeholder="Perfil"
-                required
-            />
-
-            <button
-                type="submit"
-                class="flex-grow hover:scale-105 transition-all duration-500 bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 h-10"
-                >Buscar</button
-            >
-        </form>
+        <SearchUser />
     </div>
 </Layout>
 

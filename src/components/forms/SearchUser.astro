@@ -1,0 +1,30 @@
+<form
+    id="searchplayer"
+    method="POST"
+    class="w-full md:w-[100%] flex-wrap flex gap-6">
+    <select
+        id="profileOption"
+        name="profileOption"
+        class="w-full md:lg:w-[15%] px-4 py-2 border rounded-lg h-10 bg-[#ac965c] transition-all duration-500 text-white font-medium"
+        required>
+        <option value="name" class="bg-slate-800">Por nombre</option>
+        <option value="id" class="bg-slate-800">Por id</option>
+
+        <!-- Add more options as needed -->
+    </select>
+
+    <input
+        type="text"
+        id="profilename"
+        name="profilename"
+        class="w-full font-medium md:w-[50%] md:focus:w-[70%] px-4 py-2 border rounded-lg h-10 bg-slate-800 focus:bg-white transition-all duration-500 text-white focus:text-black"
+        placeholder="Perfil"
+        required
+    />
+
+    <button
+        type="submit"
+        class="flex-grow transition-all duration-500 bg-[#ac965c] text-white font-medium py-2 px-4 rounded-lg hover:bg-opacity-50 focus:outline-none h-10"
+        >Buscar</button
+    >
+</form>

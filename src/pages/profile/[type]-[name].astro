@@ -1,6 +1,7 @@
 ---
 import Layout from '../../layouts/Layout.astro';
-import Card from '../../components/Card.astro';
+import SearchUser from '@/components/forms/SearchUser.astro';
+
 import '../../styles/globals.css';
 
 import GetRobuxProfile from '../../components/statusprofile/getrobuxprofile.jsx';
@@ -95,41 +96,12 @@ function getImageAsset(id: any) {
 ---
 
 <Layout title="Welcome to Astro.">
-    <div class="min-w-full p-4 rounded-md flex justify-center">
-        <form
-            id="searchplayer"
-            method="POST"
-            class="w-full md:w-[100%] flex-wrap flex gap-6">
-            <select
-                id="profileOption"
-                name="profileOption"
-                class="w-full md:lg:w-[8%] px-4 py-2 border rounded-lg h-10 bg-slate-800 transition-all duration-500 text-white"
-                required>
-                <option value="name">Por nombre</option>
-                <option value="id">Por id</option>
-
-                <!-- Add more options as needed -->
-            </select>
-
-            <input
-                type="text"
-                id="profilename"
-                name="profilename"
-                class="w-full md:w-[50%] md:focus:w-[80%] px-4 py-2 border rounded-lg h-10 bg-slate-800 focus:bg-white transition-all duration-500 text-white focus:text-black"
-                placeholder="Perfil"
-                required
-            />
-
-            <button
-                type="submit"
-                class="lg:w-[10%] flex-grow transition-all duration-500 bg-blue-600 text-white font-medium py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 h-10"
-                >Buscar</button
-            >
-        </form>
+    <div class="min-w-full py-4 rounded-md flex justify-center">
+        <SearchUser />
     </div>
-    <div class="min-w-[90%] flex gap-4 flex-wrap p-4 rounded-md">
+    <div class="min-w-[90%]">
         <div
-            class="bg-white dark:bg-[#020817] rounded-lg shadow-lg text-black flex relative basis-full">
+            class="bg-white rounded-lg shadow-lg text-black flex relative basis-full">
             <section
                 class="min-w-[50%] px-4 py-8 rounded-tl-lg rounded-bl-lg"
                 style='background: rgb(210,213,217); background: -moz-linear-gradient(90deg, rgba(210,213,217,1) 60%, rgba(255,255,255,1) 84%); background: -webkit-linear-gradient(90deg, rgba(210,213,217,1) 40%, rgba(255,255,255,1) 84%); background: linear-gradient(90deg, rgba(210,213,217,1) 40%, rgba(255,255,255,1) 84%); filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#d2d5d9",endColorstr="#ffffff",GradientType=1);'>
@@ -146,22 +118,30 @@ function getImageAsset(id: any) {
                 />
             </section>
         </div>
-        {
-            assets.map((value: any) => (
-                <div class="dark:bg-[rgb(210,213,217)] bg-white px-4 py-4 rounded-lg shadow-md dark:text-gray-800 text-white flex flex-col align-middle justify-center basis-1/8 ">
-                    <img
-                        src={getImageAsset(value)}
-                        class=" rounded-md h-[80%]"
-                    />
-                    <a
-                        href={`https://www.roblox.com/catalog/${value.id}`}
-                        target="_blank"
-                        class="text-2xl text-gray-800 leading-relaxed my-6 text-center font-semibold no-underline hover:font-bold hover:text-gray-800 transition-all duration-500">
-                        {value.name}
-                    </a>
-                </div>
-            ))
-        }
+        <div
+            class="min-w-full grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 rounded-md mt-4">
+            {
+                assets.map((value: any) => (
+                    <div class="bg-white bg-opacity-80 dark:bg-opacity-90 rounded-lg shadow-md dark:text-gray-800 text-white flex flex-col items-center justify-center">
+                        <a
+                            href={`https://www.roblox.com/catalog/${value.id}`}
+                            class="h-[80%] flex justify-center items-center p-6 w-full"
+                            target="_blank">
+                            <img
+                                src={getImageAsset(value)}
+                                class="rounded-md m-auto object-cover"
+                            />
+                        </a>
+                        <a
+                            href={`https://www.roblox.com/catalog/${value.id}`}
+                            target="_blank"
+                            class="text-2xl text-gray-800 leading-relaxed my-6 text-center font-semibold no-underline hover:font-bold hover:text-gray-800 transition-all duration-500">
+                            {value.name}
+                        </a>
+                    </div>
+                ))
+            }
+        </div>
     </div>
 </Layout>
 
