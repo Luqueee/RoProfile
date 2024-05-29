@@ -1,10 +1,11 @@
 ---
 import Layout from '../../layouts/Layout.astro';
 import SearchUser from '@/components/forms/SearchUser.astro';
-
+import Card from '@/components/Card.astro';
 import '../../styles/globals.css';
 
 import GetRobuxProfile from '../../components/statusprofile/getrobuxprofile.jsx';
+import { Image } from 'astro:assets';
 
 const nombre = Astro.params.name;
 const typesearch = Astro.params.type;
@@ -96,9 +97,9 @@ function getImageAsset(id: any) {
 ---
 
 <Layout title="Welcome to Astro.">
-    <div class="min-w-full py-4 rounded-md flex justify-center">
+    <Card>
         <SearchUser />
-    </div>
+    </Card>
     <div class="min-w-[90%]">
         <div
             class="bg-white rounded-lg shadow-lg text-black flex relative basis-full">
@@ -112,8 +113,12 @@ function getImageAsset(id: any) {
                 <GetRobuxProfile client:load origin={origin} id={data.id} />
             </section>
             <section class="min-w-[20%] flex-grow">
-                <img
+                <Image
                     src={imageavatar[0]}
+                    width={200}
+                    height={200}
+                    draggable="false"
+                    alt="Profile Avatar"
                     class="w-full sm:w-[50%] md:w-[50%] rounded-md flex justify-end ml-auto"
                 />
             </section>
@@ -127,8 +132,13 @@ function getImageAsset(id: any) {
                             href={`https://www.roblox.com/catalog/${value.id}`}
                             class="h-[80%] flex justify-center items-center p-6 w-full"
                             target="_blank">
-                            <img
+                            <Image
                                 src={getImageAsset(value)}
+                                alt={value.name}
+                                width={400}
+                                height={400}
+                                draggable="false"
+                                loading="lazy"
                                 class="rounded-md m-auto object-cover"
                             />
                         </a>

@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Card from '@/components/Card.astro';
 import SearchUser from '@/components/forms/SearchUser.astro';
 import '../styles/globals.css';
 
@@ -20,11 +21,9 @@ if (Astro.request.method === 'POST') {
 ---
 
 <Layout title="Welcome to Astro.">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-full max-w">
-        <h2 class="text-2xl font-bold mb-6 text-gray-800">Ver perfil</h2>
-
+    <Card>
         <SearchUser />
-    </div>
+    </Card>
 </Layout>
 
 <style></style>
